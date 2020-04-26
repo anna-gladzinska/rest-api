@@ -6,6 +6,7 @@
   "author": "Anna Gladzińska <agladzinska@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@anngladz/randomid-generator": "^1.0.1",
     "express": "4.17.1"
   }
 }

@@ -28,10 +28,18 @@ router.route('/seats').post((req, res) => {
         email: email
     }
 
-    db.seats.push(newSeat);
-    res.json({
-        message: 'ok'
-    });
+    if (
+        db.seats.some(seat => seat.day == newSeat.day && seat.seat == newSeat.seat)
+    ) {
+        res.json({
+            message: "The slot is already taken..."
+        });
+    } else {
+        db.seats.push(newSeat);
+        res.json({
+            message: 'OK'
+        });
+    }
 });
 
 router.route('/seats/:id').put((req, res) => {

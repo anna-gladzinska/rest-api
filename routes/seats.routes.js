@@ -8,52 +8,38 @@ router.route('/seats').get((req, res) => {
 });
 
 router.route('/seats/:id').get((req, res) => {
-    res.json(db.seats.filter(item => item.id == req.params.id));
+    res.json(db.seats[db.seats.findIndex(item => item.id == req.params.id)]);
 });
 
 router.route('/seats').post((req, res) => {
-    const {
-        day,
-        seat,
-        client,
-        email
-    } = req.body;
-    const id = randomID(4);
+    if (
+        db.seats.some(seat => seat.day == req.body.day && seat.seat == req.body.seat)
+    ) {
+        res.json({
+            message: "The slot is already taken..."
+        });
+    } else {
+        db.seats.push({
+            id: randomID(4),
+            day: req.body.day,
+            seat: req.body.seat,
+            client: req.body.client,
+            email: req.body.email
+        })
 
-    const newSeat = {
-        id: id,
-        day: day,
-        seat: seat,
-        client: client,
-        email: email
+        res.json({
+            message: 'OK'
+        });
     }
-
-    db.seats.push(newSeat);
-    res.json({
-        message: 'ok'
-    });
 });
 
 router.route('/seats/:id').put((req, res) => {
-    const {
-        id,
-        day,
-        seat,
-        client,
-        email
-    } = req.body;
-
-    const changeSeat = {
+    db.seats[db.seats.findIndex(item => item.id == req.params.id)] = {
         id: req.params.id,
-        seat: seat,
-        client: client,
-        email: email
+        seat: req.body.seat,
+        client: req.body.client,
+        email: req.body.email
     }
-
-    const item = db.seats.find(item => item.id == req.params.id);
-    const index = db.seats.indexOf(item);
-
-    db.seats[index] = changeSeat;
 
     res.json({
         message: 'ok'
@@ -61,10 +47,7 @@ router.route('/seats/:id').put((req, res) => {
 });
 
 router.route('/seats/:id').delete((req, res) => {
-    const item = db.seats.find(item => item.id == req.params.id);
-    const index = db.seats.indexOf(item);
-
-    db.seats.splice(index, 1)
+    db.seats.splice(db.seats.findIndex(item => item.id == req.params.id), 1)
     res.json({
         message: 'ok'
     });

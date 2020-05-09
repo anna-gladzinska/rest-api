@@ -1,19 +1,19 @@
 import React from 'react';
 import { Button, Progress, Alert } from 'reactstrap';
+import io from 'socket.io-client';
 
 import './SeatChooser.scss';
 
 class SeatChooser extends React.Component {
   
   componentDidMount() {
-    const { loadSeats } = this.props;
+    const { loadSeats, loadSeatsData, } = this.props;
+    this.socket = io('localhost:8000');
+    this.socket.on('seatsUpdated', seats => {
+      loadSeatsData(seats);
+    })
     loadSeats();
-    this.reloadSeats = setInterval(() => loadSeats(), 120000);
   }
-
-  componentWillUnmount() {
-    clearInterval(this.reloadSeats);
-  }	  
 
   isTaken = (seatId) => {
     const { seats, chosenDay } = this.props;
@@ -24,7 +24,7 @@ class SeatChooser extends React.Component {
   prepareSeat = (seatId) => {
     const { chosenSeat, updateSeat } = this.props;
     const { isTaken } = this;
-
+    
     if(seatId === chosenSeat) return <Button key={seatId} className="seats__seat" color="primary">{seatId}</Button>;
     else if(isTaken(seatId)) return <Button key={seatId} className="seats__seat" disabled color="secondary">{seatId}</Button>;
     else return <Button key={seatId} color="primary" className="seats__seat" outline onClick={(e) => updateSeat(e, seatId)}>{seatId}</Button>;
@@ -33,7 +33,11 @@ class SeatChooser extends React.Component {
   render() {
 
     const { prepareSeat } = this;
-    const { requests } = this.props;
+    const { requests, seats, chosenDay } = this.props;
+
+    const taken = () => {
+      return seats.filter(item=>item.day === chosenDay).length;
+    }
 
     return (
       <div>
@@ -43,6 +47,7 @@ class SeatChooser extends React.Component {
         { (requests['LOAD_SEATS'] && requests['LOAD_SEATS'].success) && <div className="seats">{[...Array(50)].map((x, i) => prepareSeat(i+1) )}</div>}
         { (requests['LOAD_SEATS'] && requests['LOAD_SEATS'].pending) && <Progress animated color="primary" value={50} /> }
         { (requests['LOAD_SEATS'] && requests['LOAD_SEATS'].error) && <Alert color="warning">Couldn't load seats...</Alert> }
+        <p>Free seats: {taken()}/50</p>
       </div>
     )
   };

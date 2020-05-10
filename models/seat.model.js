@@ -2,9 +2,8 @@ const mongoose = require('mongoose');
 
 const seatSchema = new mongoose.Schema({
     day: {
-        type: String,
+        type: Number,
         required: true,
-        ref: 'Concert'
     },
     seat: {
         type: Number,

@@ -2,7 +2,7 @@ const Seat = require('../models/seat.model');
 
 exports.getAll = async (req, res) => {
     try {
-        res.json(await Seat.find().populate('concert'));
+        res.json(await Seat.find());
     } catch (err) {
         res.status(500).json({
             message: err
@@ -12,7 +12,7 @@ exports.getAll = async (req, res) => {
 
 exports.getById = async (req, res) => {
     try {
-        const se = await Seat.findById(req.params.id).populate('concert');
+        const se = await Seat.findById(req.params.id);
         if (!se) res.status(404).json({
             message: 'Not found'
         });
@@ -43,6 +43,7 @@ exports.post = async (req, res) => {
         res.json({
             message: 'OK'
         });
+        req.io.emit('seatsUpdated', await Seat.find());
 
     } catch (err) {
         res.status(500).json({

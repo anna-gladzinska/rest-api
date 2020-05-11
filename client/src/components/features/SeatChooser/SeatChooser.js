@@ -14,7 +14,6 @@ class SeatChooser extends React.Component {
         this.socket = io('localhost:8000')
       }
     this.socket.on('seatsUpdated', seats => {
-      console.log('test');
       loadSeatsData(seats);
     })
     loadSeats();

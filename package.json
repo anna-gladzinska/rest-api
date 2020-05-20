@@ -7,14 +7,20 @@
   "license": "MIT",
   "dependencies": {
     "@anngladz/randomid-generator": "^1.0.1",
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
     "cors": "^2.8.5",
     "express": "4.17.1",
+    "mocha": "^7.1.2",
     "mongoose": "^5.9.13",
     "nodemon": "^2.0.3",
+    "onchange": "^7.0.2",
     "socket.io": "^2.3.0"
   },
   "scripts": {
     "start": "nodemon server.js",
-    "build": "cd client && yarn install && yarn build"
+    "build": "cd client && yarn install && yarn build",
+    "test": "mocha test/api/concerts/get.test.js",
+    "test:watch": "onchange \"./**/*.js\" -i -k -- yarn test"
   }
 }

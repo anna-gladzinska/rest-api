@@ -16,12 +16,16 @@
     "mongoose": "^5.9.13",
     "nodemon": "^2.0.3",
     "onchange": "^7.0.2",
+    "snyk": "^1.323.1",
     "socket.io": "^2.3.0"
   },
   "scripts": {
     "start": "nodemon server.js",
     "build": "cd client && yarn install && yarn build",
-    "test": "mocha test/api/concerts/get.test.js",
-    "test:watch": "onchange \"./**/*.js\" -i -k -- yarn test"
-  }
+    "test": "snyk test && mocha test/api/concerts/get.test.js",
+    "test:watch": "onchange \"./**/*.js\" -i -k -- yarn test",
+    "snyk-protect": "snyk protect",
+    "prepare": "yarn run snyk-protect"
+  },
+  "snyk": true
 }

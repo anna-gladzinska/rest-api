@@ -33,7 +33,11 @@ app.use((req, res) => {
     res.status(404).send('404 not found...');
 })
 
-mongoose.connect('mongodb+srv://' + process.env.username + ':' + process.env.password + '@cluster0-6vndz.azure.mongodb.net/NewWaveDB?retryWrites=true&w=majority', {
+// mongoose.connect('mongodb+srv://' + process.env.username + ':' + process.env.password + '@cluster0-6vndz.azure.mongodb.net/NewWaveDB?retryWrites=true&w=majority', {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true
+// });
+mongoose.connect('mongodb+srv://admin:qwerty123@cluster0-6vndz.azure.mongodb.net/NewWaveDB?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });

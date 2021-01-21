@@ -18,7 +18,7 @@
     "nodemon": "^2.0.3",
     "onchange": "^7.0.2",
     "snyk": "^1.323.1",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.4.0"
   },
   "scripts": {
     "start": "nodemon server.js",
